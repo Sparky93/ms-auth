@@ -1,4 +1,5 @@
 const app = require('express')();
+const authController = require('../controllers/auth-controller');
 
 app.post('/api/auth/register', (req, res, next) => {
   res.json({
@@ -8,13 +9,7 @@ app.post('/api/auth/register', (req, res, next) => {
   next();
 });
 
-app.get('/api/auth/login', (req, res, next) => {
-  res.json({
-    success: true,
-    message: "User successfully logged in!"
-  });
-  next();
-});
+app.get('/api/auth/login', authController.login);
 
 app.delete('/api/auth/remove', (req, res, next) => {
   res.json({

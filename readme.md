@@ -4,12 +4,12 @@
 
    This will install all the required modules and sub-modules.
 
-2. ```touch ./config/sql.conf.js```
+2. ```touch ./config/mysql.conf.js```
 
    This will create a config file which is going to be used for your **MySQL** instance.
-   
-   You can follow this example: 
-   
+
+   You can follow this example:
+
    ```javascript
    const Sequelize = require('sequelize');
    module.exports = new Sequelize('db_name', 'db_user', 'db_pass', {
