@@ -2,14 +2,15 @@
   "name": "serviceless-node",
   "version": "1.0.0",
   "description": "Backend for Serviceless app.",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./src/server.js"
   },
   "author": "sparky93",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "pug": "^2.0.4"
+    "mysql2": "^1.7.0",
+    "sequelize": "^5.18.0"
   }
 }
