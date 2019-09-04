@@ -1,21 +1,15 @@
 const app = require('express')();
-const authController = require('../controllers/auth-controller');
+const authController = require('../controllers/auth');
 
 app.post('/api/auth/register', (req, res, next) => {
-  res.json({
-    success: true,
-    message: "User successfully registered!"
-  });
+  res.json({success: true, message: "User successfully registered!"});
   next();
 });
 
 app.get('/api/auth/login', authController.login);
 
 app.delete('/api/auth/remove', (req, res, next) => {
-  res.json({
-    success: true,
-    message: "User successfully removed!"
-  });
+  res.json({success: true, message: "User successfully removed!"});
   next();
 });
 
