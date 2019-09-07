@@ -1,23 +1,26 @@
 const Sequelize = require('sequelize');
 const Database = require('./config/mysql.conf');
+
 const UserModel = require('./models/user');
 const PasswordModel = require('./models/password');
 const BusinessModel = require('./models/business');
+
 const User = UserModel(Database, Sequelize);
+const Password = PasswordModel(Database, Sequelize);
 const Business = BusinessModel(Database, Sequelize);
-const UserBusiness = Database.define('user_business', {});
+const UserBusiness = Database.define('user_businesses', {});
 
-Business.belongsToMany(User, {
-  through: UserBusiness,
-  unique : false
-});
-User.belongsTo(Business);
+Business.belongsToMany(User, {through: UserBusiness});
+Password.belongsTo(User);
 
-Database.sync({force: true}).then(() => {
-  console.log('Tables successfully created!');
-}, (err) => {
-  console.log(err);
-});
+Database
+  .sync({force: true})
+  .then(() => {
+    console.log('Tables successfully created!');
+  }, (err) => {
+    console.log(err);
+  });
 
-exports.User     = User;
-exports.Business = Business;
+module.exports.User     = User;
+module.exports.Business = Business;
+module.exports.Password = Password;

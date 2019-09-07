@@ -1,10 +1,7 @@
 const app = require('express')();
-const authController = require('../controllers/auth');
+const authController = require('../controllers/auth-controller');
 
-app.post('/api/auth/register', (req, res, next) => {
-  res.json({success: true, message: "User successfully registered!"});
-  next();
-});
+app.post('/api/auth/register', authController.register);
 
 app.get('/api/auth/login', authController.login);
 
