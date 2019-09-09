@@ -3,5 +3,5 @@ module.exports = (sequelize, type) => {
     value: {
       type: type.STRING
     }
-  }, {underscored: true});
+  });
 }

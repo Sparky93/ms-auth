@@ -8,5 +8,5 @@ module.exports = (sequelize, type) => {
     firstName: type.STRING,
     lastName : type.STRING,
     age      : type.INTEGER
-  }, {underscored: true});
-};
+  });
+}

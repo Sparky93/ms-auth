@@ -14,7 +14,7 @@
    const Sequelize = require('sequelize');
    module.exports = new Sequelize('db_name', 'db_user', 'db_pass', {
     host: 'localhost',
-    dialect: 'mysql',
+    dialect: 'mysql', // if you want to use something else, is enough to change the dialect
     pool: {
       max: 10,
       min: 0,
