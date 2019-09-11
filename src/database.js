@@ -1,5 +1,14 @@
 const Sequelize = require('sequelize');
-const Database = require('./config/mysql.conf');
+const Database = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USER, process.env.DATABASe_PASSWORD, {
+  host   : process.env.APP_HOST,
+  dialect: process.env.DATABASE_DIALECT,
+  pool   : {
+    max    : 10,
+    min    : 0,
+    acquire: 30000,
+    idle   : 10000
+  }
+});
 
 const UserModel = require('./models/user');
 const PasswordModel = require('./models/password');

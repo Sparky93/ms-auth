@@ -4,24 +4,21 @@
 
    This will install all the required modules and sub-modules.
 
-2. ```touch ./config/mysql.conf.js```
+2. ```touch .env```
 
-   This will create a config file which is going to be used for your **MySQL** instance.
+   This will create an environment file for global variables which is going to be used for a lot of components.
 
    You can follow this example:
 
-   ```javascript
-   const Sequelize = require('sequelize');
-   module.exports = new Sequelize('db_name', 'db_user', 'db_pass', {
-    host: 'localhost',
-    dialect: 'mysql', // if you want to use something else, is enough to change the dialect
-    pool: {
-      max: 10,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    }
-   });
+   ```
+   APP_SECRET_KEY='keyboard cat 4 ever'
+   APP_TOKEN_LIFETIME=129600
+   APP_HOST=localhost
+   APP_PORT=8080
+   DATABASE_NAME=serviceless
+   DATABASE_USER=root
+   DATABASe_PASSWORD=rootpass
+   DATABASE_DIALECT=mysql
    ```
 
 ## How to start the process
