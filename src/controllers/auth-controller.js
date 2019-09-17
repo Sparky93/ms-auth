@@ -2,7 +2,6 @@ const db = require('../database');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
-const jwtMW = require('express-jwt')({secret: process.env.APP_SECRET_KEY});
 
 module.exports.login = (req, res, next) => {
   let validUser = null;
