@@ -1,7 +1,7 @@
 require('dotenv').config();
 const app = require('express')();
 const bodyParser = require('body-parser');
-const authRoute = require('./routes/auth-route');
+const authRoute = require('./route/auth');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const BearerStrategy = require('passport-http-bearer').Strategy;

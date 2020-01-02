@@ -11,13 +11,14 @@
    You can follow this example:
 
    ```
+   PASSWORD_STRENGTH=7
    APP_SECRET_KEY='keyboard cat 4 ever'
    APP_TOKEN_LIFETIME=129600
    APP_HOST=localhost
    APP_PORT=8080
    DATABASE_NAME=serviceless
    DATABASE_USER=root
-   DATABASe_PASSWORD=rootpass
+   DATABASE_PASSWORD=rootpass
    DATABASE_DIALECT=mysql
    ```
 

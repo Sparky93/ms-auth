@@ -10,8 +10,8 @@ const Database = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_U
   }
 });
 
-const UserModel = require('./models/user');
-const PasswordModel = require('./models/password');
+const UserModel = require('./model/user');
+const PasswordModel = require('./model/password');
 
 const User = UserModel(Database, Sequelize);
 const Password = PasswordModel(Database, Sequelize);

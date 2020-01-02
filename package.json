@@ -1,9 +1,9 @@
 {
-  "name": "serviceless-api-clients",
+  "name": "ms-auth-express",
   "version": "1.0.0",
-  "description": "Backend for Serviceless app (clients).",
+  "description": "Microservice with backend support for authentication business logic",
   "scripts": {
-    "start": "node ./src/server.js"
+    "start": "node ./app/app.js"
   },
   "author": "sparky93",
   "license": "ISC",
