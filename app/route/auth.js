@@ -19,8 +19,7 @@ app.post("/api/auth/register", (req, res, next) => {
       db.Password.create({ userId: user.id, value: hash });
       let token = jwt.sign(
         {
-          id: user.id,
-          email: user.email
+          id: user.id
         },
         process.env.APP_SECRET_KEY,
         { expiresIn: process.env.APP_TOKEN_LIFETIME }
@@ -70,8 +69,7 @@ app.post("/api/auth/login", (req, res, next) => {
       if (result) {
         const token = jwt.sign(
           {
-            id: validUser.id,
-            email: validUser.identifier
+            id: validUser.id
           },
           process.env.APP_SECRET_KEY,
           { expiresIn: process.env.APP_TOKEN_LIFETIME }
@@ -88,13 +86,39 @@ app.post("/api/auth/login", (req, res, next) => {
     });
 });
 
-app.post("/api/auth/update", passport.authenticate('bearer', {session: false}), (req, res, next) => {
-  res.json({success: true, message: "User succesfully updated!"});
+app.put("/api/auth/update", passport.authenticate('bearer', {session: false}), (req, res, next) => {
+    jwt.verify(req.headers.authorization.split(' ')[1], process.env.APP_SECRET_KEY, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({success: false, reason: err.name});
+      }
+      db.User
+        .update(req.body, {returning: true, where: {id: decoded.id}})
+        .then(result => {
+          return res.json({success: true, message: "User successfully updated"});
+        })
+        .catch(err => {
+          return res.status(401).json({success: false, reason: err});
+        });
+    });
 });
 
-app.delete("/api/auth/remove", (req, res, next) => {
-  res.json({ success: true, message: "User successfully removed!" });
-  next();
+app.delete("/api/auth/remove", passport.authenticate('bearer', {session: false}), (req, res, next) => {
+  jwt.verify(req.headers.authorization.split(' ')[1], process.env.APP_SECRET_KEY, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({success: false, reason: err.name});
+    }
+    db.User
+      .findOne({where: {id: decoded.id}})
+      .then(user => {
+        if (user.id == decoded.id) {
+          db.User.destroy({where : {id: decoded.id}});
+          return res.json({success: true, message: "User succesfully removed"});
+        }
+      })
+      .catch(err => {
+        return res.status(401).json({success: false, reason: "Couldn't find any user"});
+      });
+  });
 });
 
 module.exports = app;

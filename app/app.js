@@ -20,7 +20,6 @@ passport.use(new BearerStrategy((token, done) => {
       if (err.name == "JsonWebTokenError") {
         return done(null, false, { success: false, reason: "token invalid" });
       }
-      cosole.log(err);
       return done(null, false, {success: false, reason: err.name});
     });
   })

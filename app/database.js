@@ -22,7 +22,6 @@ const User = UserModel(Database, Sequelize);
 const Password = PasswordModel(Database, Sequelize);
 
 User.hasOne(Password);
-Password.belongsTo(User);
 
 Database.sync({ force: true }).then(
   () => {
