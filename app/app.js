@@ -7,23 +7,31 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
 passport.use(new BearerStrategy((token, done) => {
-    //TODO also check if this token is associated in the database
-    jwt.verify(token, process.env.APP_SECRET_KEY, (err, decoded) => {
-      if (!err) {
-        return done(null, true);
-      }
+  //TODO also check if this token is associated in the database
+  jwt.verify(token, process.env.APP_SECRET_KEY, (err, decoded) => {
+    if (!err) {
+      return done(null, true);
+    }
 
-      if (err.name == "TokenExpiredError") {
-        return done(null, false, { success: false, reason: "token expired" });
-      }
+    if (err.name == "TokenExpiredError") {
+      return done(null, false, {
+        success: false,
+        reason: "token expired"
+      });
+    }
 
-      if (err.name == "JsonWebTokenError") {
-        return done(null, false, { success: false, reason: "token invalid" });
-      }
-      return done(null, false, {success: false, reason: err.name});
+    if (err.name == "JsonWebTokenError") {
+      return done(null, false, {
+        success: false,
+        reason: "token invalid"
+      });
+    }
+    return done(null, false, {
+      success: false,
+      reason: err.name
     });
-  })
-);
+  });
+}));
 
 app.listen(process.env.APP_PORT, () =>
   console.log(`Listening on port ${process.env.APP_PORT}`)
@@ -31,7 +39,9 @@ app.listen(process.env.APP_PORT, () =>
 
 // set body parsers
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 // set middlewares
 app.use(passport.initialize());

@@ -5,11 +5,10 @@ module.exports = (sequelize, type) => {
       unique: true,
       nonNull: true
     },
-    firstName: type.STRING,
-    lastName: type.STRING,
-    age: type.INTEGER
-  },
-  {
-    onDelete: 'cascade'
+    nickname: {
+      type: type.STRING,
+      unique: true,
+      nonNull: true
+    }
   });
 };
