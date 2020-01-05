@@ -1,5 +1,9 @@
 module.exports = (sequelize, type) => {
   return sequelize.define('raffle', {
-    number: type.INTEGER
+    typeId: {
+      type: type.INTEGER,
+      nonNull: true,
+      defaultValue: 0
+    }
   });
 };

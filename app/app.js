@@ -2,9 +2,9 @@ require("dotenv").config();
 const app = require("express")();
 const bodyParser = require("body-parser");
 const authRoute = require("./route/auth");
+const gameRoute = require("./route/game");
 const BearerStrategy = require("passport-http-bearer").Strategy;
 const passport = require("passport");
-const jwt = require("jsonwebtoken");
 
 passport.use(new BearerStrategy((token, done) => {
   //TODO also check if this token is associated in the database
@@ -48,3 +48,4 @@ app.use(passport.initialize());
 
 // set routers
 app.all('/api/auth*', authRoute);
+app.all('/api/game*', gameRoute);

@@ -14,23 +14,18 @@ const Database = new Sequelize(
   }
 );
 
-const PasswordModel = require("./model/password");
-const UserModel = require("./model/user");
-const WalletModel = require("./model/wallet");
-const TicketModel = require("./model/ticket");
-const RaffleModel = require("./model/raffle");
-
-const Password = PasswordModel(Database, Sequelize);
-const User = UserModel(Database, Sequelize);
-const Wallet = WalletModel(Database, Sequelize);
-const Ticket = TicketModel(Database, Sequelize);
-const Raffle = RaffleModel(Database, Sequelize);
+const Password = require("./model/password")(Database, Sequelize);
+const User = require("./model/user")(Database, Sequelize);
+const Wallet = require("./model/wallet")(Database, Sequelize);
+const Ticket = require("./model/ticket")(Database, Sequelize);
+const Raffle = require("./model/raffle")(Database, Sequelize);
+const Type = require("./model/type")(Database, Sequelize);
 
 User.hasOne(Password);
 User.hasOne(Wallet);
 User.hasMany(Ticket);
 
-Ticket.hasOne(Raffle);
+Raffle.hasOne(Ticket);
 
 Database.sync({
   force: true
@@ -48,3 +43,4 @@ module.exports.User = User;
 module.exports.Wallet = Wallet;
 module.exports.Ticket = Ticket;
 module.exports.Raffle = Raffle;
+module.exports.Type = Type;
