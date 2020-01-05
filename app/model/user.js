@@ -9,6 +9,11 @@ module.exports = (sequelize, type) => {
       type: type.STRING,
       unique: true,
       nonNull: true
+    },
+    token: {
+      type: type.STRING,
+      nonNull: true,
+      defaultValue: ""
     }
   });
 };
