@@ -2,8 +2,7 @@ const Sequelize = require("sequelize");
 const Database = new Sequelize(
   process.env.DATABASE_NAME,
   process.env.DATABASE_USER,
-  process.env.DATABASe_PASSWORD,
-  {
+  process.env.DATABASe_PASSWORD, {
     host: process.env.APP_HOST,
     dialect: process.env.DATABASE_DIALECT,
     pool: {
@@ -15,15 +14,22 @@ const Database = new Sequelize(
   }
 );
 
-const UserModel = require("./model/user");
-const PasswordModel = require("./model/password");
-
-const User = UserModel(Database, Sequelize);
-const Password = PasswordModel(Database, Sequelize);
+const Password = require("./model/password")(Database, Sequelize);
+const User = require("./model/user")(Database, Sequelize);
+const Wallet = require("./model/wallet")(Database, Sequelize);
+const Ticket = require("./model/ticket")(Database, Sequelize);
+const Raffle = require("./model/raffle")(Database, Sequelize);
+const Type = require("./model/type")(Database, Sequelize);
 
 User.hasOne(Password);
+User.hasOne(Wallet);
+User.hasMany(Ticket);
 
-Database.sync({ force: true }).then(
+Raffle.hasOne(Ticket);
+
+Database.sync({
+  force: true
+}).then(
   () => {
     console.log(`[Database] Tables successfully created!`);
   },
@@ -32,5 +38,9 @@ Database.sync({ force: true }).then(
   }
 );
 
-module.exports.User = User;
 module.exports.Password = Password;
+module.exports.User = User;
+module.exports.Wallet = Wallet;
+module.exports.Ticket = Ticket;
+module.exports.Raffle = Raffle;
+module.exports.Type = Type;
