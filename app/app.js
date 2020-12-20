@@ -2,7 +2,7 @@ require("dotenv").config();
 const app = require("express")();
 const bodyParser = require("body-parser");
 const authRoute = require("./route/auth");
-const gameRoute = require("./route/game");
+const linkRoute = require("./route/link");
 const BearerStrategy = require("passport-http-bearer").Strategy;
 const passport = require("passport");
 
@@ -47,5 +47,4 @@ app.use(bodyParser.urlencoded({
 app.use(passport.initialize());
 
 // set routers
-app.all('/api/auth*', authRoute);
-app.all('/api/game*', gameRoute);
+app.use(authRoute, linkRoute);

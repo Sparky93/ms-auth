@@ -33,3 +33,27 @@ module.exports.password = (req, res, next) => {
   }
   next();
 };
+
+module.exports.description = (req, res, next) => {
+  const desc = req.body.description;
+
+  if (!desc || desc.length < 1) {
+    return res.status(412).json({
+      success: false,
+      message: `description too small`
+    });
+  }
+  next();
+}
+
+module.exports.value = (req, res, next) => {
+  const val = req.body.value;
+
+  if (!val || val.length < 1) {
+    return res.status(412).json({
+      success: false,
+      message: `value too small`
+    });
+  }
+  next();
+}

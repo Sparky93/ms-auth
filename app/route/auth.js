@@ -6,7 +6,6 @@ const tokenValidator = require("../validator/token");
 const fieldValidator = require("../validator/field");
 
 app.post("/api/auth/register",
-  fieldValidator.identifier,
   fieldValidator.nickname,
   fieldValidator.password,
   (req, res, next) => {
@@ -17,18 +16,8 @@ app.post("/api/auth/register",
           userId: user.id,
           value: hash
         });
-        db.Wallet.create({
-            userId: user.id,
-            address: hash
-          })
-          .then(wallet => {
-            tokenValidator.sign(user);
-            res.json({
-              success: true,
-              user,
-              wallet
-            });
-          });
+        //tokenValidator.sign(user);
+        res.json({ success: true, user });
       })
       .catch(err =>
         res.status(412).json({
@@ -39,69 +28,55 @@ app.post("/api/auth/register",
   });
 
 app.post("/api/auth/login",
-  fieldValidator.identifier,
+  fieldValidator.nickname,
   (req, res, next) => {
     db.User.findOne({
+      where: {
+        nickname: req.body.nickname
+      }
+    }).then(user => {
+      tokenValidator.sign(user);
+      return Promise.resolve(user);
+    }).then(user => {
+      res.locals.user = user;
+      return db.User.update({ token: user.token }, { where: { id: user.id } })
+    }).then(result => {
+      console.log(`Updated ${result} row(s) with token!`)
+      return db.Password.findOne({
         where: {
-          identifier: req.body.identifier
+          userId: res.locals.user.id
         }
-      })
-      .then(user => {
-        if (!user) return res.json({
-          success: false,
-          message: "user not found"
-        });
-
-        res.locals.user = user;
-
-        return Promise.all([
-          db.Password.findOne({
-            where: {
-              userId: user.id
-            }
-          }),
-          db.Wallet.findOne({
-            where: {
-              userId: user.id
-            }
-          })
-        ]);
-      })
-      .then(([password, wallet]) => {
-        res.locals.wallet = wallet;
-        return bcrypt.compare(req.body.password, password.value);
-      })
-      .then(result => {
-        if (!result) return res.json({
-          success: false,
-          message: "invalid password"
-        });
-
-        tokenValidator.sign(res.locals.user);
-        res.json({
-          success: true,
-          user: res.locals.user,
-          wallet: res.locals.wallet
-        });
-      })
-      .catch(err => {
-        res.status(err.status == undefined ? 500 : err.status).json(err);
       });
+    }).then(password => {
+      return bcrypt.compare(req.body.password, password.value);
+    }).then(result => {
+      if (!result) return res.json({
+        success: false,
+        message: "invalid password"
+      });
+      res.json({
+        success: true,
+        user: res.locals.user
+      });
+    }).catch(err => {
+      res.status(err.status == undefined ? 500 : err.status).json({ success: false, message: err });
+    });
   });
 
 app.put("/api/auth/update",
   tokenValidator.validate,
   (req, res, next) => {
     db.User.update(req.body, {
-        returning: true,
-        where: {
-          id: res.locals.id
-        }
-      })
+      returning: true,
+      where: {
+        id: res.locals.id
+      }
+    })
       .then(([results, rows]) => {
         res.json({
           success: rows > 0,
-          message: rows > 0 ? "User successfully updated" : "Nothing changed"
+          message: rows > 0 ? "User successfully updated" : "Nothing changed",
+          user: rows > 0 ? results : null
         });
       })
       .catch(err => {
