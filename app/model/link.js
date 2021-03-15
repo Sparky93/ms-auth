@@ -1,6 +1,6 @@
 module.exports = (sequelize, type) => {
-  return sequelize.define('type', {
-    name: {
+  return sequelize.define('link', {
+    value: {
       type: type.STRING,
       nonNull: true,
       defaultValue: ""
@@ -10,8 +10,8 @@ module.exports = (sequelize, type) => {
       nonNull: true,
       defaultValue: ""
     },
-    price: {
-        type: type.FLOAT,
+    impression: {
+        type: type.INTEGER,
         nonNull: true,
         defaultValue: 0
     }
